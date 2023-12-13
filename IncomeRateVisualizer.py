@@ -5,18 +5,19 @@ from datetime import datetime
 
 # There are multiple things that need work in this program. At the end of this file you'll find a list of items I'm aware need changes
 
-
+# Dictionary containing names and salaries
 rich_people = {'Elon Musk': 1930000, 'Bill Gates': 198333, 'Jeff Bezos': 1430000, 'Warren Buffet': 570776,
                'Mark Zuckerberg': 375000, 'Mackenzie Scott': 1232876, 'Donald Trump': 144, 'The Walton Family': 4166666,
                'Joe Rogan': 3425, 'United States': -171232876}
 
-
+# Model class to hold data (currently not utilized)
 class IncomeModel:
     def __init__(self):
         self.data = None
 
-
+# View class responsible for creating the GUI and handling user interactions
 class IncomeView:
+    # Initializations and UI setup
     def __init__(self, root, controller):
         self.elapsed_time_str = "0 Seconds"
         self.entered = "False"
@@ -63,6 +64,7 @@ class IncomeView:
         self.add_button.place(x=130, y=125)
         self.rich_label.place(x=8, y=55)
 
+    # Continuously update income counters while the application is running
     def update_counters(self, start_time):
         global running
         income = 0.00
@@ -108,11 +110,14 @@ class IncomeView:
                 time.sleep(0.01)
 
     def run_function(self):
+        # Start a separate thread to run the update_counters function
         global running
         start_time = datetime.now()
         threading.Thread(target=self.update_counters, args=(start_time,), daemon=True).start()
 
     def start_click(self):
+        # Handle the start button click event and initiate the income calculation
+        self.fact_label.config(text="")
         if self.selected_option.get() == "Select" and self.income_entry.get() == "":
             self.warning.config(text="Please select a name and enter your income")
             return
@@ -129,14 +134,16 @@ class IncomeView:
             self.run_function()
 
     def stop_click(self):
+        # Handle the stop button click event and stop the income calculation
         global running
         running = False
-        self.fact_label.config(text="")
         self.entered = "False"
+        self.fact_label.config(text="")
         root.geometry("300x175")
         self.enable_after_stop()
 
     def fact_label_update(self):
+        # Update the fact label based on the income comparison with a rich person
         if self.selected_option.get() != "United States":
             user_income = float(self.income_entry.get())
             if self.rich_current_value > ((user_income * 40) * 52) and self.entered == "Monthly":
@@ -214,6 +221,7 @@ class IncomeView:
 
 
     def add_new(self):
+        # Open a new window to add a new person with name and hourly income
         self.disable_main_screen()
         self.new_person_window = tk.Toplevel(self.root)
         self.new_person_window.title("Add New")
@@ -237,12 +245,14 @@ class IncomeView:
         self.new_person_window.protocol("WM_DELETE_WINDOW", self.cancel_new_window)
 
     def cancel_new_window(self):
+        # Handle closing the new person window
         self.enable_main_screen()
         self.selected_option.set(self.default)
         self.enable_main_screen()
         self.new_person_window.destroy()
 
     def save_person(self):
+        # Save the new person's information and update the UI accordingly
         new_name = self.name_entry.get()
         new_income = (self.salary_entry.get())
         check_income = 0
@@ -282,11 +292,13 @@ class IncomeView:
 
 
     def cancel_new(self):
+        # Handle canceling the addition of a new person
         self.enable_main_screen()
         self.new_person_window.destroy()
         self.selected_option.set(self.default)
 
     def edit_pressed(self):
+        # Open a new window to edit the list of people
         self.disable_main_screen()
         self.edit_window = tk.Toplevel(self.root)
         self.edit_window.title("Edit")
@@ -311,6 +323,7 @@ class IncomeView:
         self.edit_window.protocol("WM_DELETE_WINDOW", self.cancel_edit_button)
 
     def cancel_edit_button(self):
+        # Handle canceling the edit operation and close the edit window
         self.enable_main_screen()
         self.edit_window.destroy()
 
@@ -331,6 +344,7 @@ class IncomeView:
         self.edit_window.destroy()
 
     def about(self):
+        # Display information about the application in a separate window
         self.about_window = tk.Toplevel(self.root)
         self.about_window.title("About")
         self.about_window.geometry("500x335")
@@ -356,10 +370,12 @@ class IncomeView:
         self.about_window.protocol("WM_DELETE_WINDOW", self.close_about)
 
     def close_about(self):
+        # Close the about window
         self.enable_main_screen()
         self.about_window.destroy()
 
     def disable_while_running(self):
+        # Disable UI elements while the application is running
         self.income_entry.config(state="disabled")
         self.dropdown.config(state="disabled")
         self.start_button.config(state="disabled")
@@ -370,6 +386,7 @@ class IncomeView:
         return
 
     def enable_after_stop(self):
+        # Enable UI elements after stopping the application
         self.income_entry.config(state="normal")
         self.dropdown.config(state="normal")
         self.start_button.config(state="normal")
@@ -380,6 +397,7 @@ class IncomeView:
         return
 
     def disable_main_screen(self):
+        # Disable UI elements on the main screen
         self.income_entry.config(state="disabled")
         self.dropdown.config(state="disabled")
         self.start_button.config(state="disabled")
@@ -390,6 +408,7 @@ class IncomeView:
         return
 
     def enable_main_screen(self):
+        # Enable UI elements on the main screen
         self.income_entry.config(state="normal")
         self.dropdown.config(state="normal")
         self.start_button.config(state="normal")
@@ -401,12 +420,14 @@ class IncomeView:
 
 
 class IncomeController:
+    # Controller class to manage the interaction between the model and view
     def __init__(self, root):
         self.model = IncomeModel()
         self.view = IncomeView(root, self)
 
 
 if __name__ == "__main__":
+    # Main entry point of the application
     root = tk.Tk()
     app = IncomeController(root)
     root.title("Income Rate Visualizer")
