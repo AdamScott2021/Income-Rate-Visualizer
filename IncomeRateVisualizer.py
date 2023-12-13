@@ -447,4 +447,3 @@ if __name__ == "__main__":
 # 8) Migrate to using a JSON file instead of using just a dictionary. I'd like the information to persist over multiple runs
 # 9) In the "Edit" window, make it so you can update and save current entries income as well as delete them
 # 10) Sometimes when stopping the program, the buttons don't reset properly at first for some reason
-# 11) Add in line comments for each aspect of code
