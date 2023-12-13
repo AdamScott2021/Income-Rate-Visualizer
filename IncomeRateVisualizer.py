@@ -81,6 +81,9 @@ class IncomeView:
                     break
                 root.geometry("400x335")
                 self.rich_rate = float(rich_people.get(self.selected_option.get()))
+                '''"ms" means millisecond. There are probably better ways to accomplish this, but I essentially 
+                forced these two variables below to assign the right value. otherwise, the printed values wouldn't 
+                update properly. I think it's because I force the program to sleep through each iteration'''
                 income_per_ms = (self.rate * 1.20 / 360000)
                 rich_income_per_ms = (self.rich_rate * 1.20 / 360000)
                 income += income_per_ms
@@ -144,6 +147,7 @@ class IncomeView:
 
     def fact_label_update(self):
         # Update the fact label based on the income comparison with a rich person
+        # This entire function needs to be overhauled and simplified
         if self.selected_option.get() != "United States":
             user_income = float(self.income_entry.get())
             if self.rich_current_value > ((user_income * 40) * 52) and self.entered == "Monthly":
